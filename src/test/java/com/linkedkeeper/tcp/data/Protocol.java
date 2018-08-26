@@ -31,11 +31,46 @@
 package com.linkedkeeper.tcp.data;
 
 import com.linkedkeeper.tcp.connector.tcp.codec.MessageBuf;
+import com.linkedkeeper.tcp.connector.tcp.codec.ProtostuffUtil;
+import com.linkedkeeper.tcp.connector.tcp.codec.TransferMsg;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 import java.util.Date;
 
 public class Protocol {
+
+    public static TransferMsg connectMsg() {
+        TransferMsg msg = new TransferMsg();
+
+        msg.setVersion("1.0");
+        msg.setDeviceId("test");
+        msg.setCmd(1000);
+        msg.setSeq(1234);
+        msg.setFormat(1);
+        msg.setFlag(1);
+        msg.setPlatform("pc");
+        msg.setPlatformVersion("1.0");
+        msg.setToken("abc");
+        msg.setAppKey("123");
+        msg.setTimeStamp("123456");
+        msg.setSign("123");
+
+        Invocation invocation = new Invocation();
+
+        invocation.setMethod("connect");
+        invocation.setToken("iosaaa");
+        invocation.setParam("123");
+        invocation.setSign("ios333");
+        invocation.setTime(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        invocation.setV("1.0");
+        invocation.setDevice("tcp test");
+        invocation.setApp("server");
+        invocation.setCmd(10000); // 连接
+
+        msg.setBody(ProtostuffUtil.serialize(invocation));
+
+        return msg;
+    }
 
     public static MessageBuf.JMTransfer.Builder generateConnect() {
         MessageBuf.JMTransfer.Builder builder = MessageBuf.JMTransfer.newBuilder();
@@ -66,6 +101,40 @@ public class Protocol {
         builder.setBody(logReq.build().toByteString());
 
         return builder;
+    }
+
+    public static TransferMsg hearBeatMsg() {
+        TransferMsg msg = new TransferMsg();
+
+        msg.setVersion("1.0");
+        msg.setDeviceId("test");
+        msg.setCmd(1002);
+        msg.setSeq(1234);
+        msg.setFormat(1);
+        msg.setFlag(1);
+        msg.setPlatform("pc");
+        msg.setPlatformVersion("1.0");
+        msg.setToken("abc");
+        msg.setAppKey("123");
+        msg.setTimeStamp("123456");
+        msg.setSign("123");
+
+        Invocation invocation = new Invocation();
+
+        invocation.setMethod("connect");
+        invocation.setToken("iosaaa");
+        invocation.setParam("123");
+        invocation.setSign("ios333");
+        invocation.setTime(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        invocation.setV("1.0");
+        invocation.setDevice("tcp test");
+        invocation.setApp("server");
+        invocation.setCmd(10002); // 连接
+
+        msg.setBody(ProtostuffUtil.serialize(invocation));
+
+        return msg;
+
     }
 
     public static MessageBuf.JMTransfer.Builder generateHeartbeat() {

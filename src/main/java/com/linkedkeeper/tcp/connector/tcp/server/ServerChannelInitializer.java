@@ -54,9 +54,9 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast("frameDecoder", new ProtobufVarint32FrameDecoder());
-        pipeline.addLast("decoder", adapter.getDecoder());
+        pipeline.addLast("decoder", adapter.getTransferDecoder());
         pipeline.addLast("frameEncoder", new ProtobufVarint32LengthFieldPrepender());
-        pipeline.addLast("encoder", adapter.getEncoder());
+        pipeline.addLast("encoder", adapter.getTransferEncoder());
         pipeline.addLast("handler", new TcpServerHandler(config));
     }
 }

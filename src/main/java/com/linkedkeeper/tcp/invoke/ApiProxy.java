@@ -31,12 +31,13 @@
 package com.linkedkeeper.tcp.invoke;
 
 import com.linkedkeeper.tcp.connector.tcp.codec.MessageBuf;
+import com.linkedkeeper.tcp.connector.tcp.codec.TransferMsg;
 import com.linkedkeeper.tcp.message.MessageWrapper;
 import com.linkedkeeper.tcp.message.SystemMessage;
 
 public interface ApiProxy {
 
-    MessageWrapper invoke(SystemMessage sMsg, MessageBuf.JMTransfer message);
+    MessageWrapper invoke(SystemMessage sMsg, TransferMsg message);
 
 }
 

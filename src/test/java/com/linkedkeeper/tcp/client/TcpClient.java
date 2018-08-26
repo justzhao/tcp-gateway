@@ -30,7 +30,10 @@
 
 package com.linkedkeeper.tcp.client;
 
+import com.linkedkeeper.tcp.connector.tcp.codec.Decoder;
+import com.linkedkeeper.tcp.connector.tcp.codec.Encoder;
 import com.linkedkeeper.tcp.connector.tcp.codec.MessageBuf;
+import com.linkedkeeper.tcp.connector.tcp.codec.TransferMsg;
 import com.linkedkeeper.tcp.data.Protocol;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -46,8 +49,8 @@ public class TcpClient {
     public static String host = "127.0.0.1";
     public static int port = 2000;
 
-//    public static String host = "jm-open.jd.com";
-//    public static int port = 80;
+    //    public static String host = "jm-open.jd.com";
+    //    public static int port = 80;
 
     public static Bootstrap bootstrap = getBootstrap();
     public static Channel channel = getChannel(host, port);
@@ -65,13 +68,14 @@ public class TcpClient {
             protected void initChannel(Channel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast("frameDecoder", new ProtobufVarint32FrameDecoder());
-                pipeline.addLast("decoder", new ProtobufDecoder(MessageBuf.JMTransfer.getDefaultInstance()));
+                //new ProtobufDecoder(MessageBuf.JMTransfer.getDefaultInstance())
+                pipeline.addLast("decoder", new Decoder(TransferMsg.class));
                 pipeline.addLast("frameEncoder", new ProtobufVarint32LengthFieldPrepender());
-                pipeline.addLast("encoder", new ProtobufEncoder());
+                // new ProtobufEncoder()
+                pipeline.addLast("encoder", new Encoder(TransferMsg.class));
                 pipeline.addLast("handler", new TcpClientHandler());
             }
         });
-
 
         b.option(ChannelOption.SO_KEEPALIVE, true);
         return b;
@@ -94,12 +98,13 @@ public class TcpClient {
         }
     }
 
-
     public static void main(String[] args) throws Exception {
         try {
-            TcpClient.connect(Protocol.generateConnect());
+            //TcpClient.connect(Protocol.generateConnect());
+            TcpClient.connect(Protocol.connectMsg());
             for (; ; ) {
-                TcpClient.connect(Protocol.generateHeartbeat());
+                //TcpClient.connect(Protocol.generateHeartbeat());
+                TcpClient.connect(Protocol.hearBeatMsg());
                 Thread.sleep(3000);
             }
         } catch (Exception e) {

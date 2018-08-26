@@ -32,6 +32,7 @@ package com.linkedkeeper.tcp.notify;
 
 import com.linkedkeeper.tcp.connector.tcp.TcpConnector;
 import com.linkedkeeper.tcp.connector.tcp.codec.MessageBuf;
+import com.linkedkeeper.tcp.connector.tcp.codec.TransferMsg;
 import com.linkedkeeper.tcp.constant.Constants;
 import com.linkedkeeper.tcp.message.MessageWrapper;
 import com.linkedkeeper.tcp.utils.ByteUtils;
@@ -67,10 +68,10 @@ public class NotifyProxy {
         }
     }
 
-    public void reply(MessageBuf.JMTransfer message) throws Exception {
+    public void reply(TransferMsg message) throws Exception {
         try {
             long seq = message.getSeq();
-            logger.info("reply seq -> " + seq + ", message -> " + ByteUtils.bytesToHexString(message.toByteArray()));
+            logger.info("reply seq -> " + seq + ", message -> " +message);
             final NotifyFuture future = this.futureMap.get(seq);
             if (future != null) {
                 future.setSuccess(true);

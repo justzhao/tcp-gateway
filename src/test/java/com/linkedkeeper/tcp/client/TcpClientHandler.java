@@ -31,6 +31,7 @@
 package com.linkedkeeper.tcp.client;
 
 import com.linkedkeeper.tcp.connector.tcp.codec.MessageBuf;
+import com.linkedkeeper.tcp.connector.tcp.codec.TransferMsg;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
@@ -42,8 +43,9 @@ public class TcpClientHandler extends ChannelInboundHandlerAdapter {
     private final static Logger logger = LoggerFactory.getLogger(TcpClientHandler.class);
 
     public void channelRead(ChannelHandlerContext ctx, Object o) throws Exception {
-        MessageBuf.JMTransfer message = (MessageBuf.JMTransfer) o;
+        //   MessageBuf.JMTransfer message = (MessageBuf.JMTransfer) o;
 
+        TransferMsg message = (TransferMsg)o;
         logger.info("Client Received Msg :" + message);
         System.out.println("Client Received Msg :" + message);
     }

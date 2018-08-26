@@ -32,6 +32,7 @@ package com.linkedkeeper.tcp.connector.tcp.server;
 
 import com.linkedkeeper.tcp.connector.tcp.TcpConnector;
 import com.linkedkeeper.tcp.connector.tcp.codec.MessageBuf;
+import com.linkedkeeper.tcp.connector.tcp.codec.TransferMsg;
 import com.linkedkeeper.tcp.connector.tcp.config.ServerTransportConfig;
 import com.linkedkeeper.tcp.constant.Constants;
 import com.linkedkeeper.tcp.invoke.ApiProxy;
@@ -67,9 +68,9 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 
     public void channelRead(ChannelHandlerContext ctx, Object o) throws Exception {
         try {
-            if (o instanceof MessageBuf.JMTransfer) {
+            if (o instanceof TransferMsg) {
                 SystemMessage sMsg = generateSystemMessage(ctx);
-                MessageBuf.JMTransfer message = (MessageBuf.JMTransfer) o;
+                TransferMsg message = (TransferMsg) o;
                 // inbound
                 if (message.getFormat() == SEND) {
                     MessageWrapper wrapper = proxy.invoke(sMsg, message);

@@ -50,4 +50,12 @@ public class ProtobufAdapter {
     public ProtobufEncoder getEncoder() {
         return encoder;
     }
+
+    public Decoder getTransferDecoder() {
+        return new Decoder(TransferMsg.class);
+    }
+
+    public Encoder getTransferEncoder() {
+        return new Encoder(TransferMsg.class);
+    }
 }
